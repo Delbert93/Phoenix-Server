@@ -22,7 +22,9 @@ defmodule GameServerWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", GameServerWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", GameServerWeb do
+    pipe_through :api
+
+    post "/register", RegisterController, :index
+  end
 end

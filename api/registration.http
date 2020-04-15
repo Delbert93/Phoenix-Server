@@ -1,0 +1,8 @@
+POST http://localhost:4000/api/register
+#headers
+Content-Type: application/json
+
+#body
+{
+    "player name": "bob"
+}
