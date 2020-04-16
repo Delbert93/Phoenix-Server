@@ -3,7 +3,8 @@
                              gettext,poison,jason,phoenix_pubsub,phoenix_html,
                              plug_cowboy,phoenix]},
               {description,"gameServer"},
-              {modules,['Elixir.GameServer','Elixir.GameServer.Application',
+              {modules,['Elixir.Cell','Elixir.GameServer',
+                        'Elixir.GameServer.Application',
                         'Elixir.GameServerWeb',
                         'Elixir.GameServerWeb.ChannelCase',
                         'Elixir.GameServerWeb.ConnCase',
@@ -20,7 +21,7 @@
                         'Elixir.GameServerWeb.RegisterView',
                         'Elixir.GameServerWeb.Router',
                         'Elixir.GameServerWeb.Router.Helpers',
-                        'Elixir.GameServerWeb.UserSocket']},
+                        'Elixir.GameServerWeb.UserSocket','Elixir.Generator']},
               {registered,[]},
               {vsn,"0.1.0"},
               {mod,{'Elixir.GameServer.Application',[]}}]}.
