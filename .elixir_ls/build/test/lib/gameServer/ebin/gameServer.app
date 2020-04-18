@@ -21,7 +21,10 @@
                         'Elixir.GameServerWeb.RegisterView',
                         'Elixir.GameServerWeb.Router',
                         'Elixir.GameServerWeb.Router.Helpers',
-                        'Elixir.GameServerWeb.UserSocket','Elixir.Generator']},
+                        'Elixir.GameServerWeb.UserSocket',
+                        'Elixir.GameStatusGenServer','Elixir.Generator',
+                        'Elixir.MainApplication','Elixir.MainServer',
+                        'Elixir.MainSupervisor','Elixir.Models.GameStatus']},
               {registered,[]},
               {vsn,"0.1.0"},
               {mod,{'Elixir.GameServer.Application',[]}}]}.
