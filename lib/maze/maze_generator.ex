@@ -94,8 +94,8 @@ defmodule MazeGenerator do
   #Return directly adjacent cells that are within the bounds of the maze
   def get_neighbors(check_cell = %Cell{}, maze_width, maze_height) do
 
-    neighbors = [%Cell{x: check_cell.x - 1, y: check_cell.y},
-                 %Cell{x: check_cell.x + 1, y: check_cell.y},
+    neighbors = [%Cell{x: check_cell.x + 1, y: check_cell.y},
+                 %Cell{x: check_cell.x - 1, y: check_cell.y},
                  %Cell{x: check_cell.x, y: check_cell.y + 1},
                  %Cell{x: check_cell.x, y: check_cell.y - 1}]
 
@@ -117,8 +117,6 @@ defmodule MazeGenerator do
     !Enum.any?([to_cell] ++ get_neighbors(to_cell, maze_width, maze_height), &Enum.member?(visited_cells, &1) )
 
   end
-
-
 
 
 end

@@ -23,8 +23,8 @@ defmodule Pathfinder do
 
       #If there are visitable neighbors and the endpoint hasn't been reached, pick a random neighbor and move to it
       neighbors != [] ->
-        next_tile = Enum.random(neighbors)
-        find_path(maze, [next_tile] ++ path, [next_tile] ++ visited_cells, endpoint)
+        next_cell = Enum.random(neighbors)
+        find_path(maze, [next_cell] ++ path, [next_cell] ++ visited_cells, endpoint)
 
       #If there are no visitable neighbors but there are still cells to backtrack to, backtrack
       path_tail != [] ->
@@ -38,11 +38,11 @@ defmodule Pathfinder do
     end
   end
 
-  def get_visitable_neighbors(check_cell = %Cell{}, maze, visited_cells) do
-    [%Cell{x: check_cell.x - 1, y: check_cell.y},
-     %Cell{x: check_cell.x + 1, y: check_cell.y},
-     %Cell{x: check_cell.x, y: check_cell.y + 1},
-     %Cell{x: check_cell.x, y: check_cell.y - 1}]
+  def get_visitable_neighbors(cell = %Cell{}, maze, visited_cells) do
+    [%Cell{x: cell.x + 1, y: cell.y},
+     %Cell{x: cell.x - 1, y: cell.y},
+     %Cell{x: cell.x, y: cell.y + 1},
+     %Cell{x: cell.x, y: cell.y - 1}]
     |> Enum.filter(fn neighbor -> Enum.member?(maze, neighbor) && !Enum.member?(visited_cells, neighbor) end)
   end
 
