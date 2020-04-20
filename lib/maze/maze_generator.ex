@@ -58,7 +58,6 @@ defmodule MazeGenerator do
       true ->
         next_cell = Enum.random(visitable_neighbors)
         #IO.puts("Moving to cell x: #{next_cell.x}, y: #{next_cell.y}")
-
         trace_path([next_cell] ++ path, [next_cell] ++ visited_cells, maze_width, maze_height)
     end
 
@@ -112,7 +111,7 @@ defmodule MazeGenerator do
   #Returns true if the cell hasn't been visited and is not adjacent to any visited cells
   def can_visit?(from_cell, to_cell, visited_cells, maze_width, maze_height) do
 
-    visited_cells = Enum.filter(visited_cells, fn cell -> cell != from_cell end)
+    visited_cells = visited_cells -- [from_cell]
 
     !Enum.any?([to_cell] ++ get_neighbors(to_cell, maze_width, maze_height), &Enum.member?(visited_cells, &1) )
 
