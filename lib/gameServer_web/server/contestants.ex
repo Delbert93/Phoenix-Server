@@ -10,6 +10,7 @@ defmodule Contestants do
   end
 
   def add_contestant(contestant) do
+    #Adds a contestant to the server based on the name they gave
     GenServer.cast(__MODULE__, {:add_contestant, {contestant, 0, [], [], [], 0}})
     :ets.lookup(table_name(), contestant)
   end
@@ -70,6 +71,8 @@ defmodule Contestants do
 
   @impl true
   def handle_cast({:score_contestant, contestant = %Contestant{}}, _) do
+    #Checks if the contestant exists in the ETS table, if it does update it with the new value given
+    #If it doesn't do nothing
     case :ets.lookup(table_name(), contestant.name) do
       [_] -> :ets.insert(table_name(), {contestant.name, contestant.round, contestant.maze, contestant.start, contestant.exit,  contestant.score})
       [] -> nil
@@ -80,6 +83,7 @@ defmodule Contestants do
 
   @impl true
   def handle_call(:get_contestants, _, contestant_list) do
+    #Returns the list of contestants
     contestant_list1 = :ets.tab2list(table_name())
     {:reply, contestant_list1, contestant_list}
   end
