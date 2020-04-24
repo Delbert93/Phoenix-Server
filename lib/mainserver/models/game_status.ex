@@ -1,5 +1,5 @@
 defmodule Models.GameStatus do
   defstruct status: false,
-            time_stamp: -1,
+            time_stamp: " ",
             number_rounds: -1
 end

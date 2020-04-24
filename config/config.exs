@@ -20,8 +20,12 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Set up time infromation
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
