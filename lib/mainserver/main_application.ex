@@ -4,8 +4,8 @@ defmodule MainApplication do
   def start(_, _) do
     children = [
       %{
-        id: MainSupervison,
-        start: {MainSupervisor, :start_link, []}
+        id: GameStatusGenServer,
+        start: {GameStatusGenServer, :start_link, []}
       }
     ]
     opts = [strategy: :one_for_one, name: __MODULE__]

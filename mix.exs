@@ -19,7 +19,7 @@ defmodule GameServer.MixProject do
   def application do
     [
       mod: {GameServer.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :timex]
     ]
   end
 
@@ -32,6 +32,8 @@ defmodule GameServer.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:tzdata, "~> 1.0.1"},
+      {:timex, "~> 3.5"},
       {:phoenix, "~> 1.4.16"},
       {:poison, "~> 3.1"},
       {:phoenix_pubsub, "~> 1.1"},
