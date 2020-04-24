@@ -5,6 +5,7 @@ defmodule GameServerWeb.RegisterController do
       IO.inspect(conn)
       IO.inspect(params)
       %{"player name" => name} = params
+      Contestants.add_contestant(name)
       response = %{"we got the request!" => name}
       json conn, Poison.encode!(response)
       #render(conn, "register.html")
