@@ -5,8 +5,8 @@ defmodule MainSupervisor do
     DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def int([]) do
-    DunamicSupervisor.init(strategy: :one_for_one)
+  def init([]) do
+    DynamicSupervisor.init(strategy: :one_for_one)
   end
 
   def start_child(_) do

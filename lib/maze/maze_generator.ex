@@ -33,7 +33,9 @@ defmodule MazeGenerator do
 
   def gen_maze(maze_width, maze_height, num_exits) do
     maze = trace_path([%Cell{x: 0, y: 0}], [%Cell{x: 0, y: 0}], maze_width, maze_height)
-    %{maze: maze, exits: Enum.take_random(maze, num_exits)}
+    exits = Enum.take_random(maze, num_exits)
+    [true_exit] = Enum.take_random(exits, 1)
+    %{maze: maze, exits: Enum.take_random(maze, num_exits), true_exit: true_exit}
   end
 
 
@@ -67,18 +69,18 @@ defmodule MazeGenerator do
 
 
 
-   # Return any cells adjacent to the given cell that have not been visited, and doesn't connect to another visited cell
+  # Return any cells adjacent to the given cell that have not been visited, and doesn't connect to another visited cell
   #
   # x = wall, o = visited, C = cell being checked for neighbors
   #
   # The cell to the right of the cell we're checking is returned as a valid neighbor because it hasn't been visited and
   # and none of the other cells it's connected to have been visited
   #
-  #  o o x x
-  #  o x x x
-  #  o C x x
-  #  o x x x
-  #  o o x x
+  # o o x x
+  # o x x x
+  # o C x x
+  # o x x x
+  # o o x x
 
   def get_visitable_neighbors(cell, visited_cells, maze_width, maze_height) do
 
