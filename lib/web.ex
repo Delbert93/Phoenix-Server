@@ -11,15 +11,24 @@ defmodule Web do
   end
 
 
+  get "/" do
+    send_resp(conn, 200, "Hello World!")
+  end
+
+
   #Ammon
   post "/register" do
-
+    
   end
 
 
   #DJ
   post "/status" do
+    status = GameStatusGenServer.get_status()
 
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Poison.encode!(status))
   end
 
 

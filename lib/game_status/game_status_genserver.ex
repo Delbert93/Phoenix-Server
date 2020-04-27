@@ -3,7 +3,7 @@ defmodule GameStatusGenServer do
 
   alias Models.GameStatus
 
-  @round_time_interval_ms 2000
+  @round_time_interval_ms 200000
 
   def child_spec(_args) do
     %{id: __MODULE__, start: {__MODULE__, :start_link, []}}
@@ -76,13 +76,14 @@ defmodule GameStatusGenServer do
 
     case status do
       :not_started ->
-        {:reply, :not_started, state}
+        {:reply, %{status: :in_progress}, state}
 
       :in_progress ->
-        {:reply,{:in_progress, %{maze: MazeGenerator.get_maze(current_round), current_round: current_round}}, state}
+        %{maze: maze, exits: exits} =  Map.delete(MazeGenerator.get_maze(current_round), :true_exit)
+        {:reply,  %{status: :in_progress, current_round: current_round, maze: maze, exits: exits}, state}
 
       :game_over ->
-        {:reply, {:game_over, ContestantsTable.get_contestants()}, state}
+        {:reply, %{status: :game_over, scores: ContestantsTable.get_contestants()}, state}
 
     end
   end
