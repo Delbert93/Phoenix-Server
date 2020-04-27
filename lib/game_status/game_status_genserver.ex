@@ -5,6 +5,10 @@ defmodule GameStatusGenServer do
 
   @round_time_interval_ms 2000
 
+  def child_spec(_args) do
+    %{id: __MODULE__, start: {__MODULE__, :start_link, []}}
+  end
+
 
   def start_link() do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
