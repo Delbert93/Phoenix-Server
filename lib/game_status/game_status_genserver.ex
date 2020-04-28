@@ -41,7 +41,7 @@ defmodule GameStatusGenServer do
   end
 
 
-  defp next_round() do
+  def next_round() do
     #Tell the genserver to start a new round. If the game isn't over and the genserver does start a new round,
     #call this function again after @round_time_interval_ms to start the next round. If the game is over and
     #the genserver didn't start a new round, do nothing
@@ -76,13 +76,17 @@ defmodule GameStatusGenServer do
 
     case status do
       :not_started ->
-        {:reply, :not_started, state}
+        {:reply, %{status: :not_started}, state}
 
       :in_progress ->
-        {:reply,{:in_progress, %{maze: MazeGenerator.get_maze(current_round), current_round: current_round}}, state}
+        %{maze: maze, exits: exits} =  Map.delete(MazeGenerator.get_maze(current_round), :true_exit)
+        {:reply,  %{status: :in_progress, current_round: current_round, maze: maze, exits: exits}, state}
 
       :game_over ->
-        {:reply, {:game_over, ContestantsTable.get_contestants()}, state}
+        score_board = ContestantsTable.get_contestants()
+        |> Enum.map(fn {name, score} -> %{name: name, score: score} end)
+        |> Enum.sort_by(&Map.get(&1, :score))
+        {:reply, %{status: :game_over, scores: score_board}, state}
 
     end
   end

@@ -3,7 +3,8 @@ defmodule GameSupervisor do
     Supervisor.start_link(
       [
        GameStatusGenServer,
-       Web
+       Web,
+       MazeGameClient
       ],
       strategy: :one_for_one
     )

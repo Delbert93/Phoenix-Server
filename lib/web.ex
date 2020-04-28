@@ -3,6 +3,7 @@ defmodule Web do
 
   plug :match
   plug :dispatch
+  plug Plug.Parsers, parsers: [:json], json_decoder: Poison
 
   def child_spec(_) do
     Plug.Adapters.Cowboy.child_spec(scheme: :http,
@@ -13,6 +14,7 @@ defmodule Web do
   get "/" do
     send_resp(conn, 200, "Hello World!")
   end
+
 
   #Ammon
   post "/register" do
@@ -34,46 +36,49 @@ defmodule Web do
   end
 
 
-
   #Matt/McKinnin
   post "/answer" do
     {:ok, body_json, _conn = %Plug.Conn{}} = Plug.Conn.read_body(conn)
-    %{"starting point" => value} = Poison.decode!(body_json)
+    %{name: contestant, round: round, answer: answer} = Poison.decode!(body_json, [keys: :atoms!])
+    answer = %Cell{x: answer.x, y: answer.y}
 
-    name = elem(value, 0)
-    all_names = ContestantsTable.get_contestants()
-    check_name(value, name, all_names)
+    contestants = ContestantsTable.get_contestants()
+    |> Enum.map(fn {name, _score} -> name end)
 
-    round = elem(value, 1)
-    check_round(value, round)
+    if check_name(contestant, contestants) do
+      ContestantsTable.score_answer(contestant, round, answer)
+      send_resp(conn, 500, "Answer scored")
+    else
+      send_resp(conn, 409, "Contestant not registered")
+    end
 
-    answer = elem(value, 2)
-    ContestantsTable.score_anser(name, round, answer)
+
   end
 
-  def check_name(_value, name, []) do
-    send_resp(_value, 500, "Your name was not found.")
-  end
 
-  def check_name(value, name, [first | rest]) do
-    case name do
-      nil ->
-        send_resp(value, 500, "You must have a name")
-      first ->
-        {:ok}
-      _Notname ->
-        check_name(value, name, rest)
+
+  def check_name(name, [first | rest] = _names) do
+    cond do
+      name == first ->
+        true
+      name == nil ->
+        false
+      true ->
+        check_name(name, rest)
     end
   end
 
-  def check_round(value, round) do
-    current_round = GameStatusGenServer.get_status()
-    case round do
-      current_round ->
-        {:ok}
-      _not ->
-        send_resp(value, 500, "Not current round")
-    end
+  # def check_round(value, round) do
+  #   current_round = GameStatusGenServer.get_status()
+  #   if round == current_round do
+  #     {:ok}
+  #   else
+  #     send_resp(value, 500, "Not current round")
+  #   end
+  # end
+
+  match _ do
+    send_resp(conn, 404, "Not able to do! Try with another route!")
   end
 
 end

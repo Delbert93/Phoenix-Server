@@ -24,7 +24,9 @@ defmodule MazeGame.MixProject do
     [
       {:cowboy, "~> 2.7"},
       {:plug, "~> 1.10"},
-      {:plug_cowboy, "~> 2.2"}
+      {:plug_cowboy, "~> 2.2"},
+      {:httpoison, "~> 1.6.2"},
+      {:poison, "~> 4.0"}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end
