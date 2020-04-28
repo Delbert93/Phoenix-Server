@@ -4,7 +4,7 @@ defmodule MazeGameClient do
   """
   @status_request_time_interval 100
   @round_time_interval 2000
-  @name "DJB"
+  @name "Client"
   @endpoint "http://localhost:4000"
 
   @doc """
