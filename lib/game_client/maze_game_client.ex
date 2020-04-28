@@ -50,7 +50,7 @@ defmodule MazeGameClient do
     response = HTTPoison.post!(@endpoint <> "/status", body, headers)
 
     response_body = Poison.decode!(response.body, %{keys: :atoms!})
-    |> IO.inspect
+    #|> IO.inspect
 
 
 
@@ -61,14 +61,12 @@ defmodule MazeGameClient do
           if (client_round < server_round) do
             maze = Enum.map(maze, fn %{x: x, y: y} -> %Cell{x: x, y: y} end)
             exits = Enum.map(exits, fn %{x: x, y: y} -> %Cell{x: x, y: y} end)
-            #|> IO.inspect(label: "Exit")
-            #IO.inspect(Enum.member?(maze, [exits] = exits), label: "Exit is part of maze")
-            #|> IO.inspect
+
             solve_round(maze, exits)
             :timer.sleep(@round_time_interval - @status_request_time_interval)
             send_answer(server_round)
             StartingPointServer.reset()
-            #request_status(client_round)
+            request_status(client_round)
           else
             :timer.sleep(@status_request_time_interval)
             request_status(server_round)
