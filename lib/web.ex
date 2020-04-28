@@ -3,6 +3,7 @@ defmodule Web do
 
   plug :match
   plug :dispatch
+  plug Plug.Parsers, parsers: [:json], json_decoder: Poison
 
   def child_spec(_) do
     Plug.Adapters.Cowboy.child_spec(scheme: :http,
@@ -18,10 +19,11 @@ defmodule Web do
 
   #Ammon
   post "/register" do
-    %{"player name" => name} = conn.params
+    {:ok, params, _plug_conn = %Plug.Conn{}} = Plug.Conn.read_body(conn)
+    %{"name" => name} = Poison.decode!(params)
     ContestantsTable.add_contestant(name)
     |> case do
-      nil -> send_resp(conn, 404, "#{name} is already a part of the game!")
+      nil -> send_resp(conn, 500, "#{name} is already a part of the game!")
       _ -> send_resp(conn, 200, "#{name} was added to the game!")
     end
   end
@@ -29,7 +31,6 @@ defmodule Web do
   #DJ
   post "/status" do
     status = GameStatusGenServer.get_status()
-
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Poison.encode!(status))

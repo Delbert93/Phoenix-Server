@@ -32,12 +32,13 @@ defmodule MazeGameClient do
     HTTPoison.start()
     body = Poison.encode!(%{name: @name})
     headers = [{"Content-type", "application/json"}]
-    response = HTTPoison.post!(@endpoint <> "/api/register", body, headers)
+    response = HTTPoison.post!(@endpoint <> "/register", body, headers)
+    |> IO.inspect
 
     with %HTTPoison.Response{status_code: 200} <- response do
       :ok
     else
-      _other -> :error
+      other -> {:error, other}
     end
 
   end
