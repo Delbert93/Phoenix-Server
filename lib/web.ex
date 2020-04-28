@@ -13,19 +13,26 @@ defmodule Web do
 
   #Ammon
   post "/register" do
-
+    %{"player name" => name} = conn.params
+    ContestantsTable.add_contestant(name)
+    |> case do
+      nil -> send_resp(conn, 404, "#{name} is already a part of the game!")
+      _ -> send_resp(conn, 200, "#{name} was added to the game!")
+    end
   end
-
 
   #DJ
   post "/status" do
 
   end
 
-
   #Matt/McKinnin
   post "/answer" do
 
+  end
+
+  match _ do
+    send_resp(conn, 404, "Not able to do! Try with another route!")
   end
 
 end
